@@ -23,19 +23,33 @@ namespace AdventureWorks
     /// </summary>
     public partial class MainWindow : Window
     {
-        private AdventureWorkContext _context = new AdventureWorkContext();
+        private CustomerList customerList;
+        private SalesOrderList salesOrderList;
+        private AdventureWorksLT2012Entities1 _context = new AdventureWorksLT2012Entities1();
+
         public MainWindow()
         {
             this.WindowState = WindowState.Maximized;
             InitializeComponent();
-
-            this.content.Content = new CustomerList(_context);
+            this._context.Customer.Load();
+            this.customerList = new CustomerList(_context.Customer.Local);
+            this._context.SalesOrderHeader.Load();
+            this._context.Product.Load();
+            this.salesOrderList = new SalesOrderList(_context.SalesOrderHeader.Local, _context.Product.Local);
+            this.content.Content = this.salesOrderList;
         }
-
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
             this._context.Dispose();
+        }
+        private void Customers_Click(object sender, RoutedEventArgs e)
+        {
+            this.content.Content = this.customerList;
+        }
+        private void SalesOrders_Click(object sender, RoutedEventArgs e)
+        {
+            this.content.Content = this.salesOrderList;
         }
     }
 }

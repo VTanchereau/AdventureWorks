@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -22,11 +23,11 @@ namespace AdventureWorks.UC
     public partial class CustomerList : UserControl
     {
         private AddressList addressList;
-        private AdventureWorkContext context;
-        public CustomerList(AdventureWorkContext _context)
+        private ObservableCollection<Customer> customerCollection;
+        public CustomerList(ObservableCollection<Customer> _customerCollection)
         {
             InitializeComponent();
-            this.context = _context;
+            this.customerCollection = _customerCollection;
             this.addressList = new AddressList();
             this.detailControl.Content = this.addressList;
         }
@@ -39,9 +40,7 @@ namespace AdventureWorks.UC
             System.Windows.Data.CollectionViewSource customerViewSource =
                     ((System.Windows.Data.CollectionViewSource)(this.FindResource("customerViewSource")));
 
-            this.context.Customer.Load();
-
-            customerViewSource.Source = this.context.Customer.Local;
+            customerViewSource.Source = this.customerCollection;
 
             customerListView.SelectedIndex = 0;
         }

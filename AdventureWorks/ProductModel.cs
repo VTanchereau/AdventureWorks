@@ -12,31 +12,24 @@ namespace AdventureWorks
     using System;
     using System.Collections.ObjectModel;
     
-    public partial class Address
+    public partial class ProductModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Address()
+        public ProductModel()
         {
-            this.CustomerAddress = new ObservableCollection<CustomerAddress>();
-            this.SalesOrderHeader = new ObservableCollection<SalesOrderHeader>();
-            this.SalesOrderHeader1 = new ObservableCollection<SalesOrderHeader>();
+            this.Product = new ObservableCollection<Product>();
+            this.ProductModelProductDescription = new ObservableCollection<ProductModelProductDescription>();
         }
     
-        public int AddressID { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string City { get; set; }
-        public string StateProvince { get; set; }
-        public string CountryRegion { get; set; }
-        public string PostalCode { get; set; }
+        public int ProductModelID { get; set; }
+        public string Name { get; set; }
+        public string CatalogDescription { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<CustomerAddress> CustomerAddress { get; set; }
+        public virtual ObservableCollection<Product> Product { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<SalesOrderHeader> SalesOrderHeader { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<SalesOrderHeader> SalesOrderHeader1 { get; set; }
+        public virtual ObservableCollection<ProductModelProductDescription> ProductModelProductDescription { get; set; }
     }
 }

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="AdventureWorks.UC.SalesOrderDetailList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdventureWorks.UC"
+             xmlns:AdventureWorks="clr-namespace:AdventureWorks"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="salesOrderDetailViewSource" 
+                                d:DesignSource="{d:DesignInstance {x:Type AdventureWorks:SalesOrderDetail}, CreateList=True}"/>
+        <CollectionViewSource x:Key="productCollectionSource" Source="{Binding productCollection}" />
+    </UserControl.Resources>
+    <DataGrid DataContext="{StaticResource salesOrderDetailViewSource}" ItemsSource="{Binding}" x:Name="salesOrderDetailDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid.Columns>
+            <AdventureWorks:DataGridComboBoxColumnWithBindingHack
+                Header="Product"
+                SelectedValueBinding="{Binding ProductID}"
+                SelectedValuePath="ProductID"
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Source={StaticResource productCollectionSource}}"/>
+            <DataGridTextColumn x:Name="orderQtyColumn" Binding="{Binding OrderQty}" 
+                                    Header="Order Qty" Width="Auto"/>
+            <DataGridTextColumn x:Name="unitPriceColumn" Binding="{Binding UnitPrice}" 
+                                    Header="Unit Price" Width="Auto"/>
+            <DataGridTextColumn x:Name="unitPriceDiscountColumn" Binding="{Binding UnitPriceDiscount}" 
+                                    Header="Unit Price Discount" Width="Auto"/>
+            <DataGridTextColumn x:Name="lineTotalColumn" Binding="{Binding LineTotal}" 
+                                    Header="Line Total" Width="Auto"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

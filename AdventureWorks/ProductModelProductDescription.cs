@@ -12,15 +12,15 @@ namespace AdventureWorks
     using System;
     using System.Collections.ObjectModel;
     
-    public partial class CustomerAddress
+    public partial class ProductModelProductDescription
     {
-        public int CustomerID { get; set; }
-        public int AddressID { get; set; }
-        public string AddressType { get; set; }
+        public int ProductModelID { get; set; }
+        public int ProductDescriptionID { get; set; }
+        public string Culture { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual Address Address { get; set; }
-        public virtual Customer Customer { get; set; }
+        public virtual ProductDescription ProductDescription { get; set; }
+        public virtual ProductModel ProductModel { get; set; }
     }
 }

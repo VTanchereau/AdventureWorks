@@ -10,6 +10,8 @@
         <StackPanel DockPanel.Dock="Top">
             <Menu>
                 <MenuItem Header="_Fichier">
+                    <MenuItem Header="_Customers" Click="Customers_Click"/>
+                    <MenuItem Header="_SalesOrders" Click="SalesOrders_Click"/>
                 </MenuItem>
             </Menu>
         </StackPanel>
