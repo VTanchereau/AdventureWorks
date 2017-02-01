@@ -6,7 +6,13 @@
         xmlns:local="clr-namespace:AdventureWorks"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top">
+            <Menu>
+                <MenuItem Header="_Fichier">
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+        <ContentControl x:Name="content"/>
+    </DockPanel>
 </Window>

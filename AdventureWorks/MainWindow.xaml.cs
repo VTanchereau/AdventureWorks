@@ -1,5 +1,8 @@
-﻿using System;
+﻿using AdventureWorks.UC;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +23,19 @@ namespace AdventureWorks
     /// </summary>
     public partial class MainWindow : Window
     {
+        private AdventureWorkContext _context = new AdventureWorkContext();
         public MainWindow()
         {
+            this.WindowState = WindowState.Maximized;
             InitializeComponent();
+
+            this.content.Content = new CustomerList(_context);
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            this._context.Dispose();
         }
     }
 }
