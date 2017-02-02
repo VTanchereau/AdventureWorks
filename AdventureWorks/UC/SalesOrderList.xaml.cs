@@ -25,13 +25,15 @@ namespace AdventureWorks.UC
         private ObservableCollection<SalesOrderHeader> salesOrderCollection;
         private ObservableCollection<Product> productCollection;
         private SalesOrderDetailList detailList;
-        public SalesOrderList(ObservableCollection<SalesOrderHeader> _salesOrderCollection, ObservableCollection<Product> _productCollection)
+        private MainWindow mainWindow;
+        public SalesOrderList(MainWindow _mainWindow, ObservableCollection<SalesOrderHeader> _salesOrderCollection, ObservableCollection<Product> _productCollection)
         {
             InitializeComponent();
             this.salesOrderCollection = _salesOrderCollection;
             this.productCollection = _productCollection;
             this.detailList = new SalesOrderDetailList(this.productCollection);
             this.detailControl.Content = this.detailList;
+            this.mainWindow = _mainWindow;
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -44,6 +46,11 @@ namespace AdventureWorks.UC
         private void salesOrderHeaderListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.detailList.SetSalesOrderSource(this.salesOrderHeaderListView.SelectedItem as SalesOrderHeader);
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            this.mainWindow.SaveContext();
         }
     }
 }

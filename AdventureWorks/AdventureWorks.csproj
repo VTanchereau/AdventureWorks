@@ -127,6 +127,7 @@
     <Compile Include="UC\SalesOrderList.xaml.cs">
       <DependentUpon>SalesOrderList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VR\OrderDetailValidationRule.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

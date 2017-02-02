@@ -35,8 +35,13 @@ namespace AdventureWorks
             this.customerList = new CustomerList(_context.Customer.Local);
             this._context.SalesOrderHeader.Load();
             this._context.Product.Load();
-            this.salesOrderList = new SalesOrderList(_context.SalesOrderHeader.Local, _context.Product.Local);
+            this.salesOrderList = new SalesOrderList(this, _context.SalesOrderHeader.Local, _context.Product.Local);
             this.content.Content = this.salesOrderList;
+        }
+
+        public void SaveContext()
+        {
+            this._context.SaveChanges();
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {

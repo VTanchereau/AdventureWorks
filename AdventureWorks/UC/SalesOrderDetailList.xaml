@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AdventureWorks.UC"
              xmlns:AdventureWorks="clr-namespace:AdventureWorks"
+             xmlns:VR="clr-namespace:AdventureWorks.VR"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <UserControl.Resources>
@@ -12,22 +13,41 @@
                                 d:DesignSource="{d:DesignInstance {x:Type AdventureWorks:SalesOrderDetail}, CreateList=True}"/>
         <CollectionViewSource x:Key="productCollectionSource" Source="{Binding productCollection}" />
     </UserControl.Resources>
-    <DataGrid DataContext="{StaticResource salesOrderDetailViewSource}" ItemsSource="{Binding}" x:Name="salesOrderDetailDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+    <DataGrid DataContext="{StaticResource salesOrderDetailViewSource}" ItemsSource="{Binding}" x:Name="salesOrderDetailDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected" CellEditEnding="salesOrderDetailDataGrid_CellEditEnding">
+        <DataGrid.Resources>
+            <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="Padding" Value="-2"/>
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="Background" Value="Red"/>
+                        <Setter Property="ToolTip" 
+                            Value="{Binding RelativeSource={RelativeSource Self},
+                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </DataGrid.Resources>
+
         <DataGrid.Columns>
             <AdventureWorks:DataGridComboBoxColumnWithBindingHack
+                x:Name="productComboBox"
                 Header="Product"
-                SelectedValueBinding="{Binding ProductID}"
-                SelectedValuePath="ProductID"
+                SelectedValueBinding="{Binding Product, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="{Binding self}"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding Source={StaticResource productCollectionSource}}"/>
-            <DataGridTextColumn x:Name="orderQtyColumn" Binding="{Binding OrderQty}" 
+            <DataGridTextColumn x:Name="orderQtyColumn" Binding="{Binding OrderQty, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, IsAsync=True}" 
                                     Header="Order Qty" Width="Auto"/>
-            <DataGridTextColumn x:Name="unitPriceColumn" Binding="{Binding UnitPrice}" 
+            <DataGridTextColumn x:Name="unitPriceColumn" Binding="{Binding UnitPrice, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, IsAsync=True}" 
                                     Header="Unit Price" Width="Auto"/>
-            <DataGridTextColumn x:Name="unitPriceDiscountColumn" Binding="{Binding UnitPriceDiscount}" 
+            <DataGridTextColumn x:Name="unitPriceDiscountColumn" Binding="{Binding UnitPriceDiscount, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, IsAsync=True}" 
                                     Header="Unit Price Discount" Width="Auto"/>
-            <DataGridTextColumn x:Name="lineTotalColumn" Binding="{Binding LineTotal}" 
+            <DataGridTextColumn x:Name="lineTotalColumn" Binding="{Binding LineTotal, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, IsAsync=True}" 
                                     Header="Line Total" Width="Auto"/>
         </DataGrid.Columns>
+        
+        <DataGrid.RowValidationRules>
+            <VR:OrderDetailValidationRule ValidationStep="UpdatedValue"/>
+        </DataGrid.RowValidationRules>
     </DataGrid>
 </UserControl>

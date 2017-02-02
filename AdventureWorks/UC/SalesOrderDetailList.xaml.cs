@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace AdventureWorks.UC
 {
@@ -36,7 +37,6 @@ namespace AdventureWorks.UC
 
             this.source = salesOrderSource;
             salesOrderDetailViewSource.Source = this.source.SalesOrderDetail;
-            this.salesOrderDetailDataGrid.Items.Refresh();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -44,6 +44,23 @@ namespace AdventureWorks.UC
             System.Windows.Data.CollectionViewSource productCollectionSource =
                     ((System.Windows.Data.CollectionViewSource)(this.FindResource("productCollectionSource")));
             productCollectionSource.Source = this.productCollection;
+            this.salesOrderDetailDataGrid.Items.Refresh();
+        }
+        private void salesOrderDetailDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            ListCollectionView itemList = this.salesOrderDetailDataGrid.Items.SourceCollection as ListCollectionView;
+            SalesOrderDetail current = itemList.CurrentItem as SalesOrderDetail;
+            current.SalesOrderHeader = this.source;
+            this.source.SalesOrderDetail.Add(current);
+            current.UnitPrice = current.Product.ListPrice;
+            System.Windows.Data.CollectionViewSource salesOrderDetailViewSource =
+                    ((System.Windows.Data.CollectionViewSource)(this.FindResource("salesOrderDetailViewSource")));
+
+
+            this.source = current.SalesOrderHeader;
+            salesOrderDetailViewSource.Source = this.source.SalesOrderDetail;
+            this.salesOrderDetailDataGrid.DataContext = null;
+            this.salesOrderDetailDataGrid.DataContext = salesOrderDetailViewSource;
         }
     }
 }
