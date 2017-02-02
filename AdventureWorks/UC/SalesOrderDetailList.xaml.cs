@@ -50,12 +50,14 @@ namespace AdventureWorks.UC
         {
             ListCollectionView itemList = this.salesOrderDetailDataGrid.Items.SourceCollection as ListCollectionView;
             SalesOrderDetail current = itemList.CurrentItem as SalesOrderDetail;
-            current.SalesOrderHeader = this.source;
-            this.source.SalesOrderDetail.Add(current);
+            if (e.Row.IsNewItem)
+            {
+                current.SalesOrderHeader = this.source;
+                this.source.SalesOrderDetail.Add(current);
+            }
             current.UnitPrice = current.Product.ListPrice;
             System.Windows.Data.CollectionViewSource salesOrderDetailViewSource =
                     ((System.Windows.Data.CollectionViewSource)(this.FindResource("salesOrderDetailViewSource")));
-
 
             this.source = current.SalesOrderHeader;
             salesOrderDetailViewSource.Source = this.source.SalesOrderDetail;
